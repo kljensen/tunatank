@@ -14,4 +14,5 @@ angular.module('tunatankApp')
       'AngularJS',
       'Karma'
     ];
+    console.log('MainCtrl');
   });
