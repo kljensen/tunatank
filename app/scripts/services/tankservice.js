@@ -25,7 +25,11 @@ angular.module('tunatankApp')
 
     function addEntrepreneur (){
     	console.log('adding entrepreneur!');
-    	entrepreneurs.$add({name: "wpp", teamName: "dfs"})
+    	entrepreneurs.$add({
+    		name: "",
+    		companyName: "",
+    		urlSlug: ""
+    	})
     }
     return {
     	bar: 'fucking shit',

@@ -15,7 +15,7 @@ angular.module('tunatankApp')
       'Karma'
     ];
     $scope.bar = TankService.bar;
-    $scope.tank = TankService.tank;
+    TankService.tank.$bind($scope, 'tank');
     $scope.addEntrepreneur = TankService.addEntrepreneur;
     $scope.resetTank = TankService.resetTank;
   }]);

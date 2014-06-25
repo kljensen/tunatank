@@ -1,8 +1,20 @@
-<p>This is the admin view. {{bar}}</p>
 
+
+<h3>Current Round: {{tank.currentRound}}</h3>
+<h3>Entrepreneurs:</h3>
 <div ng-repeat="entrepreneur in tank.entrepreneurs">
-	<p>{{entrepreneur.name}}</p>
+	<form role="form">
+		<input class="form-control" type="text" ng-model="entrepreneur.name" name="name" placeholder="Name of entrepreneur">
+		<input class="form-control" ng-model="entrepreneur.companyName" name="companyName" placeholder="Name of company">
+		<input class="form-control" ng-model="entrepreneur.urlSlug" name="urlSlug" placeholder="URL slug">
+		<br>
+	</form>
 </div>
-<a ng-click="addEntrepreneur()">Add Entrepreneur</a>
-<a ng-click="resetTank()">Reset Tank</a>
-<p>woot</p>
+<div>
+	<button type="button" class="btn btn-default" ng-click="addEntrepreneur()">
+		Add Entrepreneur
+	</button>
+	<button type="button" class="btn btn-default" ng-click="resetTank()">
+		Reset Tank
+	</button>
+</div>
