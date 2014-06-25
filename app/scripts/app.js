@@ -15,12 +15,16 @@ var tunatankApp = angular
 
 tunatankApp.config(['$routeProvider',
   function($routeProvider) {
-    $routeProvider.
-      when('/admin', {
-        templateUrl: 'views/admin.html',
-        controller: 'AdminCtrl'
-      }).
-      otherwise({
-        redirectTo: '/'
-      });
+	$routeProvider
+		.when('/admin', {
+			templateUrl: 'views/admin.html',
+			controller: 'AdminCtrl'
+		})
+		.when('/investor', {
+			templateUrl: 'views/investor.html',
+			controller: 'InvestorCtrl'
+		})
+		.otherwise({
+			redirectTo: '/investor'
+		});
 }]);
