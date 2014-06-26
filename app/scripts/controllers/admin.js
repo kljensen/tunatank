@@ -9,11 +9,7 @@
  */
 angular.module('tunatankApp')
   .controller('AdminCtrl', ['$scope', 'TankService', function ($scope, TankService) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+
     $scope.bar = TankService.bar;
     TankService.tank.$bind($scope, 'tank');
     $scope.addEntrepreneur = TankService.addEntrepreneur;
@@ -21,6 +17,9 @@ angular.module('tunatankApp')
 
     $scope.incrementRound = function(){
 		$scope.tank['currentRound'] += 1;
+	}
+    $scope.decrementRound = function(){
+		$scope.tank['currentRound'] -= 1;
 	}
 
   }]);

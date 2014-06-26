@@ -12,6 +12,28 @@ angular.module('tunatankApp')
   	var tank = $firebase(new Firebase('https://tuna-tank.firebaseio.com'));
   	var entrepreneurs = tank.$child('entrepreneurs');
   	var investors = tank.$child('investors');
+  	var maxRounds = 3;
+
+  	var rounds = [
+  		{
+  			initialCapital: 100000,
+  			investmentIncrement: 10000,
+  			showValuations: false,
+  			separateFounders: true
+  		},
+  		{
+  			initialCapital: 1000000,
+  			investmentIncrement: 100000,
+  			showValuations: true,
+  			separateFounders: false
+  		},
+  		{
+  			initialCapital: 1000000,
+  			investmentIncrement: 100000,
+  			showValuations: true,
+  			separateFounders: false
+  		},
+  	];
 
     // Reset the tank
     function resetTank () {
@@ -19,7 +41,7 @@ angular.module('tunatankApp')
     	tank.$set({
     		entrepreneurs: [],
     		investors: [],
-    		currentRound: 0
+    		currentRound: -1
     	})
     }
 
@@ -28,7 +50,8 @@ angular.module('tunatankApp')
     	entrepreneurs.$add({
     		name: "",
     		companyName: "",
-    		urlSlug: ""
+    		urlSlug: "",
+    		premoneyValuations: [1000000, null, null]
     	})
     }
 
@@ -42,10 +65,16 @@ angular.module('tunatankApp')
     		$cookieStore.put('investorUUID', investorUUID);
     	};
 		var investor = investors.$child(investorUUID);
-    	if (_.isEmpty(investor)){
-    		investor = {name: ""}
+    	if (!investor['name']){
+    		console.log("Creating investor with empty investments");
+    		investor['name'] = "";
+    		investor['investments'] = [{}, {}, {}];
     	}
     	return investor;
+    }
+
+    function getForCurrentRound(attribute){
+    	return rounds[tank.currentRound][attribute];
     }
 
     return {
@@ -56,5 +85,7 @@ angular.module('tunatankApp')
     	resetTank: resetTank,
     	addEntrepreneur: addEntrepreneur,
     	getOrCreateInvestor: getOrCreateInvestor,
+    	getForCurrentRound: getForCurrentRound,
+    	rounds: rounds,
     }
   }]);
