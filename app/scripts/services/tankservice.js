@@ -16,18 +16,21 @@ angular.module('tunatankApp')
 
   	var rounds = [
   		{
+        title: "Friends, Fools and Family Round",
   			initialCapital: 100000,
   			investmentIncrement: 10000,
   			showValuations: false,
   			separateFounders: true
   		},
   		{
-  			initialCapital: 1000000,
-  			investmentIncrement: 100000,
+        title: "Angel Round",
+        initialCapital: 250000,
+  			investmentIncrement: 25000,
   			showValuations: true,
   			separateFounders: false
   		},
   		{
+        title: "Venture Round",
   			initialCapital: 1000000,
   			investmentIncrement: 100000,
   			showValuations: true,

@@ -48,4 +48,8 @@ angular.module('tunatankApp')
 			};
 		}
 
+		$scope.getRoundTitle = function(){
+			return TankService.rounds[$scope.tank.currentRound].title;
+		}
+
 	}]);

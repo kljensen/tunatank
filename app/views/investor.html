@@ -11,8 +11,8 @@
 		The competition will begin soon. Current Round == {{tank.currentRound}}
 	</p>
   </div>
-  <div ng-switch-when="0">
-  	<h3>Round 1: Angel investment round</h3>
+  <div ng-switch-default>
+  	<h3>Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
   	<div>Capital to invest = {{getRemainingCapital()}}</div>
   	<div ng-repeat="entrepreneur in tank.entrepreneurs">
   		<div>{{entrepreneur.name}}</div>
@@ -31,7 +31,4 @@
       </div>
   	</div>
   </div>
-  <div ng-switch-when="1">rounding stinking 2</div>
-  <div ng-switch-when="2">rounding stinking 3</div>
-  <div ng-switch-default>woot</div>
 </div>
