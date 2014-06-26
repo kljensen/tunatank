@@ -1,6 +1,6 @@
 
 
-<h3>Current Round: {{tank.currentRound}}</h3>
+<h3>Current Round: {{tank.currentRound}} </h3>
 <h3>Entrepreneurs:</h3>
 <div ng-repeat="entrepreneur in tank.entrepreneurs">
 	<form role="form">
@@ -17,4 +17,8 @@
 	<button type="button" class="btn btn-default" ng-click="resetTank()">
 		Reset Tank
 	</button>
+	<button type="button" class="btn btn-default" ng-click="incrementRound()">
+		Increment Round
+	</button>
+
 </div>

@@ -18,4 +18,9 @@ angular.module('tunatankApp')
     TankService.tank.$bind($scope, 'tank');
     $scope.addEntrepreneur = TankService.addEntrepreneur;
     $scope.resetTank = TankService.resetTank;
+
+    $scope.incrementRound = function(){
+		$scope.tank['currentRound'] += 1;
+	}
+
   }]);

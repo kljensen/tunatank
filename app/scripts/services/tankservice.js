@@ -51,6 +51,8 @@ angular.module('tunatankApp')
     return {
     	bar: 'fucking shit',
     	tank: tank,
+    	entrepreneurs: entrepreneurs,
+    	investors: investors,
     	resetTank: resetTank,
     	addEntrepreneur: addEntrepreneur,
     	getOrCreateInvestor: getOrCreateInvestor,

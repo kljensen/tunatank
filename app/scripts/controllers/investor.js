@@ -13,5 +13,7 @@ angular.module('tunatankApp')
 		var investor = TankService.getOrCreateInvestor();
 		investor.$bind($scope, 'me');
 		$scope.foo = "wot";
+		$scope.entrepreneurs = TankService.entrepreneurs;
+		$scope.tank = TankService.tank;
 
 	}]);
