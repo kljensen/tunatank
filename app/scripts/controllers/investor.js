@@ -8,10 +8,10 @@
  * Controller of the tunatankApp
  */
 angular.module('tunatankApp')
-  .controller('InvestorCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+	.controller('InvestorCtrl', ['$scope', 'TankService', function ($scope, TankService) {
+		console.log('in InvestorCtrl');
+		var investor = TankService.getOrCreateInvestor();
+		investor.$bind($scope, 'me');
+		$scope.foo = "wot";
+
+	}]);

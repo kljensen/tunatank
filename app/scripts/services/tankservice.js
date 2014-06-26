@@ -8,7 +8,7 @@
  * Service in the tunatankApp.
  */
 angular.module('tunatankApp')
-  .factory('TankService', ['$firebase', function TankService($firebase) {
+  .factory('TankService', ['$firebase', 'rfc4122', '$cookieStore', function TankService($firebase, rfc4122, $cookieStore) {
   	var tank = $firebase(new Firebase('https://tuna-tank.firebaseio.com'));
   	var entrepreneurs = tank.$child('entrepreneurs');
   	var investors = tank.$child('investors');
@@ -31,10 +31,28 @@ angular.module('tunatankApp')
     		urlSlug: ""
     	})
     }
+
+    function getOrCreateInvestor(){
+    	var investorUUID = $cookieStore.get('investorUUID');
+    	console.log(investorUUID);
+    	console.log($cookieStore);
+
+    	if (!investorUUID){
+    		investorUUID = rfc4122.v4();
+    		$cookieStore.put('investorUUID', investorUUID);
+    	};
+		var investor = investors.$child(investorUUID);
+    	if (_.isEmpty(investor)){
+    		investor = {name: ""}
+    	}
+    	return investor;
+    }
+
     return {
     	bar: 'fucking shit',
     	tank: tank,
     	resetTank: resetTank,
     	addEntrepreneur: addEntrepreneur,
+    	getOrCreateInvestor: getOrCreateInvestor,
     }
   }]);

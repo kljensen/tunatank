@@ -10,7 +10,7 @@
  */
 var tunatankApp = angular
   .module('tunatankApp', [
-    'ngRoute', 'ngAnimate', 'firebase'
+    'ngRoute', 'ngAnimate', 'firebase', 'uuid', 'ngCookies'
   ]);
 
 tunatankApp.config(['$routeProvider',
