@@ -67,12 +67,7 @@ angular.module('tunatankApp')
     		investorUUID = rfc4122.v4();
     		$cookieStore.put('investorUUID', investorUUID);
     	};
-		var investor = investors.$child(investorUUID);
-    	if (!investor['name']){
-    		console.log("Creating investor with empty investments");
-    		investor['name'] = "";
-    		investor['investments'] = [{}, {}, {}];
-    	}
+  		var investor = investors.$child(investorUUID);
     	return investor;
     }
 

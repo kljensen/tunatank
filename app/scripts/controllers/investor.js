@@ -22,7 +22,15 @@ angular.module('tunatankApp')
 
 		$scope.getRemainingCapital = function(){
 			var invested = 0;
-			var currentRoundInvestments = $scope.me['investments'][$scope.tank.currentRound];
+			var round = $scope.tank.currentRound;
+			if (_.isUndefined(round)) {
+				return null;
+			};
+			if (_.isUndefined($scope.me.investments)) {
+				// TODO, do this in service
+				$scope.me.investments = [{}, {}, {}];
+			};
+			var currentRoundInvestments = $scope.me.investments[round];
 			if (!_.isEmpty(currentRoundInvestments)) {
 				var amounts = _.pluck(currentRoundInvestments, 'amount');
 				invested = _.reduce(amounts, add);				
@@ -32,6 +40,7 @@ angular.module('tunatankApp')
 
 		$scope.changeInvestment = function(entrepreneurUrlSlug, upward){
 			var myInvestments = $scope.me.investments[$scope.tank.currentRound];
+			console.log('myInvestments = ', myInvestments);
 			if (!_.has(myInvestments, entrepreneurUrlSlug)) {
 				myInvestments[entrepreneurUrlSlug] = {amount: 0};
 			};
@@ -49,6 +58,10 @@ angular.module('tunatankApp')
 		}
 
 		$scope.getRoundTitle = function(){
+			var round = $scope.tank.currentRound;
+			if (round < 0 || _.isUndefined(round)){
+				return "Initialization";
+			};
 			return TankService.rounds[$scope.tank.currentRound].title;
 		}
 
