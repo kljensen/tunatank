@@ -1,22 +1,28 @@
-<p>Welcome investor! Please tell us about yourself.</p>
-<div>
-	<form role="form">
-		<input class="form-control" type="text" ng-model="me.name" name="name" placeholder="Your name">
-	</form>
+<div class="jumbotron">
+  <p class="welcome">Welcome investor! Please tell us about yourself.</p>
+  <div>
+    <form role="form">
+      <input class="form-control" type="text" ng-model="me.name" name="name" placeholder="Your name">
+    </form>
+  </div>
 </div>
 
-<div ng-switch="tank.currentRound">
+
+<div class="jumbotron" ng-switch="tank.currentRound">
   <div ng-switch-when="-1">
-  	<p>
-		The competition will begin soon. Current Round == {{tank.currentRound}}
-	</p>
+  	<p>The competition will begin soon. Current Round == {{tank.currentRound}}</p>
   </div>
   <div ng-switch-default>
-  	<h3>Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
-  	<div>Capital to invest = {{getRemainingCapital()}}</div>
-  	<div ng-repeat="entrepreneur in tank.entrepreneurs">
+  	<h3 class="round">Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
+  	<div class="capital">Capital to invest = {{getRemainingCapital() | currency:"$"}}</div>
+  	<div class="entrepreneur" ng-repeat="entrepreneur in tank.entrepreneurs">
   		<div>{{entrepreneur.name}}</div>
-  		<div class="input-group">
+			<div class="btn-group">
+			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, false)"><span class="glyphicon glyphicon-minus"></span></button>
+			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, true)"><span class="glyphicon glyphicon-plus"></span></button>
+			</div>
+      <span class="investment">{{me.investments[tank.currentRound][entrepreneur.urlSlug].amount || 0 | currency:"$"}}</span>
+  		<!-- <div class="input-group">
           <span class="input-group-btn">
               <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, false)">
                   <span class="glyphicon glyphicon-minus"></span>
@@ -28,7 +34,7 @@
                   <span class="glyphicon glyphicon-plus"></span>
               </button>
           </span>
-      </div>
+      </div> -->
   	</div>
   </div>
 </div>

@@ -1,7 +1,6 @@
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -59,6 +58,7 @@ body {
   margin-top: 28px;
 }
 
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   /* Remove the padding we set earlier */
@@ -76,4 +76,124 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+/*fonts*/
+
+@font-face {
+	font-family: 'AvenirNext';
+	src: url('../fonts/AvenirNextLTPro-Regular.eot?') format('eot'),
+	     url('../fonts/AvenirNextLTPro-Regular.otf')  format('opentype'),
+	     url('../fonts/AvenirNextLTPro-Regular.woff') format('woff'),
+	     url('../fonts/AvenirNextLTPro-Regular.ttf')  format('truetype'),
+	     url('../fonts/AvenirNextLTPro-Regular.svg#AvenirNextLTPro-Regular') format('svg');
+       font-weight: bold;
+       font-style: normal;
+}
+
+@font-face {
+	font-family: 'AvenirNext';
+	src: url('../fonts/AvenirNextLTPro-Demi.eot?') format('eot'),
+	     url('../fonts/AvenirNextLTPro-Demi.otf')  format('opentype'),
+	     url('../fonts/AvenirNextLTPro-Demi.woff') format('woff'),
+	     url('../fonts/AvenirNextLTPro-Demi.ttf')  format('truetype'),
+	     url('../fonts/AvenirNextLTPro-Demi.svg#AvenirNextLTPro-Demi') format('svg');
+       font-weight: 400;
+       font-style: normal;
+}
+
+@font-face {
+	font-family: 'AvenirNext';
+	src: url('../fonts/AvenirNextLTPro-Bold.eot?') format('eot'),
+	     url('../fonts/AvenirNextLTPro-Bold.otf')  format('opentype'),
+	     url('../fonts/AvenirNextLTPro-Bold.woff') format('woff'),
+	     url('../fonts/AvenirNextLTPro-Bold.ttf')  format('truetype'),
+	     url('../fonts/AvenirNextLTPro-Bold.svg#AvenirNextLTPro-Bold') format('svg');
+       font-weight: bold;
+       font-style: normal;
+}
+
+/*typography*/
+body {
+  font-family: "AvenirNext";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "AvenirNext";
+  color: #00457c;
+}
+
+
+p {
+  font-family: "AvenirNext";
+}
+
+a {
+  color: #00457c;
+}
+
+/*navbar*/
+.navbar {
+  min-height: 80px;
+}
+.navbar-default {
+  background: #fff;
+  border-color: #00457c;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #00457c;
+}
+
+.navbar-toggle {
+  display: none;
+}
+
+.navbar h1 {
+  margin: 0;
+}
+.navbar-default .navbar-brand {
+  color: #00457c;
+  font-size: 24px;
+  height: 80px;
+  line-height: 55px;
+  font-weight: bold;
+}
+
+.navbar-default .navbar-brand img {
+  margin-right: 10px;
+}
+
+.welcome {
+  font-size: 16px;
+  text-align: left;
+  color: #00457c;
+}
+
+.btn-group button span {
+  font-size: 12px;
+}
+
+.capital {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.entrepreneur {
+  margin-bottom: 10px;
+}
+
+.label {
+  padding-top: 6px;
+  font-weight: normal;
+}
+.investment {
+}
+
+.jumbotron {
+  text-align: left;
+}
+
+h3.round {
+  margin-top: 0;
+  margin-bottom: 20px;
 }
