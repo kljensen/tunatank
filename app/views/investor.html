@@ -16,8 +16,11 @@
   	<h3 class="round">Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
   	<div class="capital">Capital to invest = ${{getRemainingCapital() | number:0}}</div>
   	<div class="entrepreneur" ng-repeat="entrepreneur in entrepreneurs">
-      <div ng-show="showEntrepreneur()">{{entrepreneur.name}}</div>
-  		<div ng-hide="showEntrepreneur()">{{entrepreneur.companyName}}</div>
+      <div>
+        <span ng-show="showEntrepreneur()">{{entrepreneur.name}}</span>
+    		<span ng-hide="showEntrepreneur()">{{entrepreneur.companyName}}</span>
+        <span>(Premoney valuation = ${{entrepreneur.premoneyValuations[tank.currentRound]|number:0}})</span>
+      </div>
 			<div class="btn-group">
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, false)"><span class="glyphicon glyphicon-minus"></span></button>
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, true)"><span class="glyphicon glyphicon-plus"></span></button>
