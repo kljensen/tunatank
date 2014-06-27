@@ -13,7 +13,9 @@ angular.module('tunatankApp')
 		$scope.myUUID = TankService.getOrCreateInvestor();
 		var bootstrapped = false;
 		TankService.investors.$bind($scope, 'investors').then(function(){
+			console.log('we are bootstrapped');
 			bootstrapped = true;
+			console.log($scope.investors);
 		});
 		$scope.foo = "wot";
 		$scope.entrepreneurs = TankService.entrepreneurs;
@@ -49,6 +51,13 @@ angular.module('tunatankApp')
 			if (!bootstrapped) {
 				return null;
 			};
+			if (!_.has($scope.investors, $scope.myUUID)){
+				return null;
+			}
+			if (!_.has($scope.investors[$scope.myUUID], 'investments')){
+				return null;
+			}
+			console.log('investments =', $scope.investors[$scope.myUUID].investments);
 			var investment = $scope.investors[$scope.myUUID].investments[$scope.tank.currentRound][slug];
 			if (_.isUndefined(investment)) {
 				return 0;

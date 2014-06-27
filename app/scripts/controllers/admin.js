@@ -17,8 +17,8 @@ angular.module('tunatankApp')
     $scope.resetTank = TankService.resetTank;
 
     $scope.incrementRound = function(){
-  		$scope.tank['currentRound'] += 1;
       TankService.recomputeValuations();
+      $scope.tank['currentRound'] += 1;
   	}
     $scope.decrementRound = function(){
   		$scope.tank['currentRound'] -= 1;

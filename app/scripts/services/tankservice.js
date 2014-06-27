@@ -22,7 +22,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 10000,
   			showValuations: false,
   			showEntrepreneur: true,
-        recomputeValuation: false,
+        appreciation: 2,
   		},
   		{
         title: "Angel Round",
@@ -30,7 +30,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 25000,
   			showValuations: true,
   			showEntrepreneur: false,
-        recomputeValuation: false,
+        appreciation: 3,
   		},
       {
         title: "Venture Round (Series A)",
@@ -38,7 +38,7 @@ angular.module('tunatankApp')
         investmentIncrement: 100000,
         showValuations: true,
         showEntrepreneur: false,
-        recomputeValuation: true,
+        appreciation: 4,
       },
       {
         title: "Venture Round (Series B)",
@@ -46,7 +46,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 100000,
   			showValuations: true,
   			showEntrepreneur: false,
-        recomputeValuation: true,
+        appreciation: 5,
   		},
   	];
 
@@ -84,7 +84,11 @@ angular.module('tunatankApp')
     		$cookieStore.put('investorUUID', investorUUID);
     	};
       if(!_.has(investors, investorUUID)){
-        investors[investorUUID] = {name: ""}
+        var newInvestor = {};
+
+        // # TODO: do not hardcode number of rounds in investments
+        newInvestor[investorUUID] = {name: "", investments: [{dummy:{amount: 0}}, {dummy:{amount: 0}}, {dummy:{amount: 0}}, {dummy:{amount: 0}}]}
+        investors.$update(newInvestor)
       };
     	return investorUUID;
     }
@@ -101,14 +105,19 @@ angular.module('tunatankApp')
         return null;
       };
       if (_.isUndefined(investors[investorUUID].investments)) {
-        investors[investorUUID].investments = [{}, {}, {}, {}];
+        investors[investorUUID].investments = [{dummy:{amount: 0}}, {dummy:{amount: 0}}, {dummy:{amount: 0}}, {dummy:{amount: 0}}];
       };
       var currentRoundInvestments = investors[investorUUID].investments[round];
+      console.log('currentRoundInvestments =', currentRoundInvestments);
       if (!_.isEmpty(currentRoundInvestments)) {
         var amounts = _.pluck(currentRoundInvestments, 'amount');
+        console.log(amounts);
         invested = _.reduce(amounts, add);        
       };
-      return getForCurrentRound('initialCapital') - invested;
+      var initialCapital = getForCurrentRound('initialCapital');
+      console.log('Started with ', initialCapital, 'this round');
+      console.log('have invested', invested);
+      return initialCapital - invested;
     }
 
     function changeInvestment (investorUUID, entrepreneurUrlSlug, upward){
@@ -133,42 +142,37 @@ angular.module('tunatankApp')
     }
 
     function recomputeValuations () {
-      console.log('In recomputeValuations');
-      if (!getForCurrentRound('recomputeValuation')) {
-        console.log('returning early');
-        return;
-      };
-      var i = tank.currentRound - 1;
+      // The current round is ending. Compute the post money
+      // valuation and the 'bonus'.
+      //
+      var i = tank.currentRound;
       var sumInvestments = {};
 
-      // Loop backwards over rounds
+      // Loop over investors
       // 
-      while (i >= 0){
-        console.log('round', i);
+      var investorUUIDs = investors.$getIndex();
+      investorUUIDs.forEach(function(investorUUID) {
+        var investor = investors[investorUUID];
+        console.log(investor);
+        console.log('Round', i, 'for investor', investor.name);
 
-        // Loop over investors
-        // 
-        _.forOwn(investors, function(investor, investorUUID){
-          console.log(investor);
-          console.log('Round', i, 'for investor', investor.name);
-          var investmentsRoundi = investor.investments[i];
-
-          // Loop over the investments they've made this round
-          // 
-          _.forOwn(investmentsRoundi, function(val, key) {
-            console.log('\tinvested in', key);
-            if (!_.has(sumInvestments, key)) {
-              sumInvestments.key = val;
-            }else{
-              sumInvestments.key += val;
-            };
-          });
-        })
-        if (!getForCurrentRound('recomputeValuation')) {
-          break;
+        if (!_.has(investor, 'investments')) {
+          return;
         };
-        i--;
-      }
+        var investmentsRoundi = investor.investments[i];
+
+        // Loop over the investments they've made this round
+        // 
+        _.forOwn(investmentsRoundi, function(val, key) {
+          console.log('\tinvested in', key);
+          if (!_.has(sumInvestments, key)) {
+            sumInvestments[key] = val.amount;
+          }else{
+            sumInvestments[key] += val.amount;
+          };
+        });
+      })
+
       console.log(sumInvestments);
     }
 
