@@ -10,12 +10,12 @@
 angular.module('tunatankApp')
 	.controller('InvestorCtrl', ['$scope', 'TankService', function ($scope, TankService) {
 		console.log('in InvestorCtrl');
-		$scope.myUUID = TankService.getOrCreateInvestor();
 		var bootstrapped = false;
 		TankService.investors.$bind($scope, 'investors').then(function(){
 			console.log('we are bootstrapped');
 			bootstrapped = true;
 			console.log($scope.investors);
+			$scope.myUUID = TankService.getOrCreateInvestor();
 		});
 		$scope.foo = "wot";
 		$scope.entrepreneurs = TankService.entrepreneurs;
@@ -23,6 +23,9 @@ angular.module('tunatankApp')
 
 
 		$scope.getRemainingCapital = function(){
+			if (_.isUndefined($scope.myUUID)) {
+				return null;
+			};
 			console.log('woot');
 			return TankService.getRemainingCapital($scope.myUUID);
 		}
