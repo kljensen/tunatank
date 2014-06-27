@@ -49,7 +49,11 @@ angular.module('tunatankApp')
 			if (!bootstrapped) {
 				return null;
 			};
-			return $scope.investors[$scope.myUUID].investments[$scope.tank.currentRound][slug].amount
+			var investment = $scope.investors[$scope.myUUID].investments[$scope.tank.currentRound][slug];
+			if (_.isUndefined(investment)) {
+				return 0;
+			};
+			return investment.amount;
 		}
 
 	}]);
