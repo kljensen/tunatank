@@ -65,4 +65,12 @@ angular.module('tunatankApp')
 			return TankService.rounds[$scope.tank.currentRound].title;
 		}
 
+		$scope.showEntrepreneur = function() {
+			var round = $scope.tank.currentRound;
+			if (round < 0 || _.isUndefined(round)){
+				return false;
+			};
+			return TankService.rounds[round].showEntrepreneur;
+		}
+
 	}]);

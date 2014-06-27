@@ -20,21 +20,21 @@ angular.module('tunatankApp')
   			initialCapital: 100000,
   			investmentIncrement: 10000,
   			showValuations: false,
-  			separateFounders: true
+  			showEntrepreneur: true
   		},
   		{
         title: "Angel Round",
         initialCapital: 250000,
   			investmentIncrement: 25000,
   			showValuations: true,
-  			separateFounders: false
+  			showEntrepreneur: false
   		},
   		{
         title: "Venture Round",
   			initialCapital: 1000000,
   			investmentIncrement: 100000,
   			showValuations: true,
-  			separateFounders: false
+  			showEntrepreneur: false
   		},
   	];
 
