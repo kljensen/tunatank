@@ -22,7 +22,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 10000,
   			showValuations: false,
   			showEntrepreneur: true,
-        appreciation: 2,
+        appreciation: 1.25,
   		},
   		{
         title: "Angel Round",
@@ -30,7 +30,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 25000,
   			showValuations: true,
   			showEntrepreneur: false,
-        appreciation: 3,
+        appreciation: 1.5,
   		},
       {
         title: "Venture Round (Series A)",
@@ -38,7 +38,7 @@ angular.module('tunatankApp')
         investmentIncrement: 100000,
         showValuations: true,
         showEntrepreneur: false,
-        appreciation: 4,
+        appreciation: 2,
       },
       {
         title: "Venture Round (Series B)",
@@ -46,7 +46,7 @@ angular.module('tunatankApp')
   			investmentIncrement: 100000,
   			showValuations: true,
   			showEntrepreneur: false,
-        appreciation: 5,
+        appreciation: 3,
   		},
   	];
 
@@ -70,20 +70,23 @@ angular.module('tunatankApp')
     		name: "",
     		companyName: "",
     		urlSlug: "",
-    		premoneyValuations: [1000000, null, null, null]
+        // Setting stuff to -1 b/c firebase behaves weird with nulls and zeros
+        premoneyValuations: [1000000, -1, -1, -1],
+        postmoneyValuations: [-1, -1, -1, -1],
+        bonuses: [-1, -1, -1, -1],
+    		finalValues: [-1, -1, -1, -1]
     	})
     }
 
     function getOrCreateInvestor(){
     	var investorUUID = $cookieStore.get('investorUUID');
-    	console.log(investorUUID);
-    	console.log($cookieStore);
 
     	if (!investorUUID){
     		investorUUID = rfc4122.v4();
     		$cookieStore.put('investorUUID', investorUUID);
     	};
       if(!_.has(investors, investorUUID)){
+        console.log('creating new investor');
         var newInvestor = {};
 
         // # TODO: do not hardcode number of rounds in investments
@@ -142,6 +145,10 @@ angular.module('tunatankApp')
     }
 
     function recomputeValuations () {
+      if (tank.currentRound < 0) {
+        return;
+      };
+
       // The current round is ending. Compute the post money
       // valuation and the 'bonus'.
       //
@@ -173,6 +180,58 @@ angular.module('tunatankApp')
         });
       })
 
+      var sumPremoney = 0;
+      var slugToEID = {};
+      for (var i in entrepreneurs.$getIndex()){
+        var eid = entrepreneurs.$getIndex()[i];
+        var entrepreneur = entrepreneurs[eid];
+        slugToEID[entrepreneur.urlSlug] = eid;
+        var premoneyValuation = entrepreneur.premoneyValuations[tank.currentRound];
+        sumPremoney += premoneyValuation;
+
+        var postmoneyValuation = premoneyValuation + (sumInvestments[entrepreneur.urlSlug] || 0);
+        entrepreneurs[eid].postmoneyValuations[tank.currentRound] = postmoneyValuation;
+      }
+
+      // Calculate the bonuses, which is a pro-rata distribution
+      // of the appreciation in this round.
+      // 
+      var totalBonus = rounds[tank.currentRound].appreciation * sumPremoney;
+      var bonuses = {};
+      var finalValues = {};
+      var totalInvestedThisRound = _.reduce(_.values(sumInvestments), add);
+      _.forOwn(sumInvestments, function(val, slug){
+        var eid = slugToEID[slug];
+        if (_.isUndefined(eid)) {
+          return;
+        };
+        console.log(eid);
+        bonuses[slug] = totalBonus * (val / totalInvestedThisRound);
+        entrepreneurs[eid].bonuses[tank.currentRound] = bonuses[slug];
+        finalValues[slug] = 
+          entrepreneurs[eid].postmoneyValuations[tank.currentRound] 
+            + bonuses[slug];
+        entrepreneurs[eid].finalValues[tank.currentRound] = finalValues[slug];
+
+      });
+
+      console.log('totalBonus = ', totalBonus);
+      console.log('sumInvestments = ', sumInvestments);
+      console.log('bonuses = ', bonuses);
+      console.log('finalValues = ', finalValues);
+
+      // Make the finalValues the premoney for the next
+      // round.
+      var nextRound = tank.currentRound + 1;
+      if(nextRound < rounds.length){
+        for (var i in entrepreneurs.$getIndex()){
+          var eid = entrepreneurs.$getIndex()[i];
+          var entrepreneur = entrepreneurs[eid];
+          entrepreneurs[eid].premoneyValuations[nextRound] = finalValues[entrepreneur.urlSlug];
+        }
+      }
+
+      entrepreneurs.$save();
       console.log(sumInvestments);
     }
 
