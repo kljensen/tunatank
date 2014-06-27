@@ -45,6 +45,9 @@ body {
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }
+.jumbotron div{
+    text-align: center;
+}
 .jumbotron .btn {
   font-size: 21px;
   padding: 14px 24px;
@@ -179,7 +182,10 @@ a {
 }
 
 .entrepreneur {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+}
+div.investment-buttons{
+  margin-top:15px;
 }
 
 .label {
@@ -187,6 +193,11 @@ a {
   font-weight: normal;
 }
 .investment {
+  font-size:32px;
+  vertical-align: middle;
+  padding-left: 1em;
+    color:#777;
+
 }
 
 .jumbotron {
@@ -196,4 +207,10 @@ a {
 h3.round {
   margin-top: 0;
   margin-bottom: 20px;
+}
+span.team-name{
+  font-size: 24px;
+}
+span.premoney{
+  color:#777;
 }

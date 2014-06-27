@@ -1,8 +1,8 @@
 <div class="jumbotron">
-  <p class="welcome">Welcome investor! Please tell us about yourself.</p>
+  <p class="welcome">Welcome investor! Please fill in your team name.</p>
   <div>
     <form role="form">
-      <input class="form-control" type="text" ng-model="investors[myUUID].name" name="name" placeholder="Your name">
+      <input class="form-control" type="text" ng-model="investors[myUUID].name" name="name" placeholder="Your team name here...">
     </form>
   </div>
 </div>
@@ -10,18 +10,18 @@
 
 <div ng-hide="tank.done" class="jumbotron" ng-switch="tank.currentRound">
   <div ng-switch-when="-1">
-  	<p>The competition will begin soon. Current Round == {{tank.currentRound}}</p>
+  	<p>The competition will begin soon...</p>
   </div>
   <div ng-switch-default>
   	<h3 class="round">Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
   	<div class="capital">Capital to invest = ${{getRemainingCapital() | number:0}}</div>
   	<div class="entrepreneur" ng-repeat="entrepreneur in entrepreneurs">
       <div>
-        <span ng-show="showEntrepreneur()">{{entrepreneur.name}}</span>
-    		<span ng-hide="showEntrepreneur()">{{entrepreneur.companyName}}</span>
-        <span>(Premoney valuation = ${{entrepreneur.premoneyValuations[tank.currentRound]|number:0}})</span>
+        <span ng-show="showEntrepreneur()" class="team-name">{{entrepreneur.name}}</span>
+    		<span ng-hide="showEntrepreneur()" class="team-name">{{entrepreneur.companyName}}</span><br>
+        <span class="premoney">(${{entrepreneur.premoneyValuations[tank.currentRound]|number:0}} premoney)</span>
       </div>
-			<div class="btn-group">
+			<div class="btn-group investment-buttons">
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, false)"><span class="glyphicon glyphicon-minus"></span></button>
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, true)"><span class="glyphicon glyphicon-plus"></span></button>
 			</div>
