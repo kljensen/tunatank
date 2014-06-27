@@ -10,51 +10,23 @@
 angular.module('tunatankApp')
 	.controller('InvestorCtrl', ['$scope', 'TankService', function ($scope, TankService) {
 		console.log('in InvestorCtrl');
-		$scope.me = TankService.getOrCreateInvestor();
-		$scope.me.$bind($scope, 'me');
+		$scope.myUUID = TankService.getOrCreateInvestor();
+		var bootstrapped = false;
+		TankService.investors.$bind($scope, 'investors').then(function(){
+			bootstrapped = true;
+		});
 		$scope.foo = "wot";
 		$scope.entrepreneurs = TankService.entrepreneurs;
 		$scope.tank = TankService.tank;
-		console.log($scope.me);
-		function add(x, y){
-			return x + y;
-		}
+
 
 		$scope.getRemainingCapital = function(){
-			var invested = 0;
-			var round = $scope.tank.currentRound;
-			if (_.isUndefined(round)) {
-				return null;
-			};
-			if (_.isUndefined($scope.me.investments)) {
-				// TODO, do this in service
-				$scope.me.investments = [{}, {}, {}];
-			};
-			var currentRoundInvestments = $scope.me.investments[round];
-			if (!_.isEmpty(currentRoundInvestments)) {
-				var amounts = _.pluck(currentRoundInvestments, 'amount');
-				invested = _.reduce(amounts, add);				
-			};
-			return TankService.getForCurrentRound('initialCapital') - invested;
+			console.log('woot');
+			return TankService.getRemainingCapital($scope.myUUID);
 		}
 
 		$scope.changeInvestment = function(entrepreneurUrlSlug, upward){
-			var myInvestments = $scope.me.investments[$scope.tank.currentRound];
-			console.log('myInvestments = ', myInvestments);
-			if (!_.has(myInvestments, entrepreneurUrlSlug)) {
-				myInvestments[entrepreneurUrlSlug] = {amount: 0};
-			};
-			var increment = TankService.rounds[$scope.tank.currentRound].investmentIncrement;
-			if (upward != true) {
-				increment *= -1 
-			};
-			if (increment > $scope.getRemainingCapital()) {
-				console.log("Cannot invest what you don't have!");
-			}else if(myInvestments[entrepreneurUrlSlug].amount + increment < 0){
-				console.log("Cannot make a negative investment!");
-			}else{
-				myInvestments[entrepreneurUrlSlug].amount += increment;
-			};
+			return TankService.changeInvestment($scope.myUUID, entrepreneurUrlSlug, upward);
 		}
 
 		$scope.getRoundTitle = function(){
@@ -71,6 +43,13 @@ angular.module('tunatankApp')
 				return false;
 			};
 			return TankService.rounds[round].showEntrepreneur;
+		}
+
+		$scope.getCurrentInvestment = function(slug){
+			if (!bootstrapped) {
+				return null;
+			};
+			return $scope.investors[$scope.myUUID].investments[$scope.tank.currentRound][slug].amount
 		}
 
 	}]);

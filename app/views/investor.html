@@ -2,7 +2,7 @@
   <p class="welcome">Welcome investor! Please tell us about yourself.</p>
   <div>
     <form role="form">
-      <input class="form-control" type="text" ng-model="me.name" name="name" placeholder="Your name">
+      <input class="form-control" type="text" ng-model="investors[myUUID].name" name="name" placeholder="Your name">
     </form>
   </div>
 </div>
@@ -15,14 +15,14 @@
   <div ng-switch-default>
   	<h3 class="round">Round {{tank.currentRound}}: {{getRoundTitle()}}</h3>
   	<div class="capital">Capital to invest = ${{getRemainingCapital() | number:0}}</div>
-  	<div class="entrepreneur" ng-repeat="entrepreneur in tank.entrepreneurs">
+  	<div class="entrepreneur" ng-repeat="entrepreneur in entrepreneurs">
       <div ng-show="showEntrepreneur()">{{entrepreneur.name}}</div>
   		<div ng-hide="showEntrepreneur()">{{entrepreneur.companyName}}</div>
 			<div class="btn-group">
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, false)"><span class="glyphicon glyphicon-minus"></span></button>
 			  <button type="button" class="btn btn-default btn-number" ng-click="changeInvestment(entrepreneur.urlSlug, true)"><span class="glyphicon glyphicon-plus"></span></button>
 			</div>
-      <span class="investment">${{me.investments[tank.currentRound][entrepreneur.urlSlug].amount || 0 | number:0}}</span>
+      <span class="investment">${{getCurrentInvestment(entrepreneur.urlSlug) || 0 | number:0}}</span>
 
   	</div>
   </div>

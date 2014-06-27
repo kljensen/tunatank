@@ -12,14 +12,16 @@ angular.module('tunatankApp')
 
     $scope.bar = TankService.bar;
     TankService.tank.$bind($scope, 'tank');
+    TankService.entrepreneurs.$bind($scope, 'entrepreneurs');
     $scope.addEntrepreneur = TankService.addEntrepreneur;
     $scope.resetTank = TankService.resetTank;
 
     $scope.incrementRound = function(){
-		$scope.tank['currentRound'] += 1;
-	}
+  		$scope.tank['currentRound'] += 1;
+      TankService.recomputeValuations();
+  	}
     $scope.decrementRound = function(){
-		$scope.tank['currentRound'] -= 1;
-	}
+  		$scope.tank['currentRound'] -= 1;
+  	}
 
-  }]);
+}]);

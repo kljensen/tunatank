@@ -2,7 +2,7 @@
 
 <h3>Current Round: {{tank.currentRound}} </h3>
 <h3>Entrepreneurs:</h3>
-<div ng-repeat="entrepreneur in tank.entrepreneurs">
+<div ng-repeat="entrepreneur in entrepreneurs">
 	<form role="form">
 		<input class="form-control" type="text" ng-model="entrepreneur.name" name="name" placeholder="Name of entrepreneur">
 		<input class="form-control" ng-model="entrepreneur.companyName" name="companyName" placeholder="Name of company">
