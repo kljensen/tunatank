@@ -8,7 +8,7 @@
 </div>
 
 
-<div class="jumbotron" ng-switch="tank.currentRound">
+<div ng-hide="tank.done" class="jumbotron" ng-switch="tank.currentRound">
   <div ng-switch-when="-1">
   	<p>The competition will begin soon. Current Round == {{tank.currentRound}}</p>
   </div>
@@ -29,4 +29,13 @@
 
   	</div>
   </div>
+</div>
+
+<div ng-show="tank.done" class="jumbotron">
+  <h3>Your positions</h3>
+  <ul>
+    <li ng-repeat="(eid, position) in investors[myUUID].positions">
+      {{entrepreneurs[eid].companyName}}: ${{position.totalInvestment|number:0}} for {{100*position.purchasedPercent|number:2}}% now worth ${{position.purchasedPercent * entrepreneurs[eid].finalValues[entrepreneurs[eid].finalValues.length-1]| number:0}}
+    </li>
+  </ul>
 </div>

@@ -58,7 +58,8 @@ angular.module('tunatankApp')
     function resetTank () {
     	console.log('restting!');
     	tank.$set({
-    		currentRound: -1
+    		currentRound: -1,
+        done: false,
     	})
       entrepreneurs.$set([]);
       investors.$set({});
@@ -182,14 +183,20 @@ angular.module('tunatankApp')
 
       var sumPremoney = 0;
       var slugToEID = {};
+      var bonuses = {};
+      var finalValues = {};
+
       for (var i in entrepreneurs.$getIndex()){
         var eid = entrepreneurs.$getIndex()[i];
         var entrepreneur = entrepreneurs[eid];
         slugToEID[entrepreneur.urlSlug] = eid;
+        bonuses[entrepreneur.urlSlug] = null;
+        finalValues[entrepreneur.urlSlug] = null;
         var premoneyValuation = entrepreneur.premoneyValuations[tank.currentRound];
         sumPremoney += premoneyValuation;
 
         var postmoneyValuation = premoneyValuation + (sumInvestments[entrepreneur.urlSlug] || 0);
+        console.log('Setting postmoneyValuations for round', tank.currentRound);
         entrepreneurs[eid].postmoneyValuations[tank.currentRound] = postmoneyValuation;
       }
 
@@ -197,23 +204,20 @@ angular.module('tunatankApp')
       // of the appreciation in this round.
       // 
       var totalBonus = rounds[tank.currentRound].appreciation * sumPremoney;
-      var bonuses = {};
-      var finalValues = {};
-      var totalInvestedThisRound = _.reduce(_.values(sumInvestments), add);
-      _.forOwn(sumInvestments, function(val, slug){
-        var eid = slugToEID[slug];
-        if (_.isUndefined(eid)) {
-          return;
-        };
-        console.log(eid);
-        bonuses[slug] = totalBonus * (val / totalInvestedThisRound);
+      var totalInvestedThisRound = _.max([1, _.reduce(_.values(sumInvestments), add)]);
+      for (var i in entrepreneurs.$getIndex()){
+        var eid = entrepreneurs.$getIndex()[i];
+        var entrepreneur = entrepreneurs[eid];
+        var slug = entrepreneur.urlSlug;
+        console.log('totalInvestedThisRound', totalInvestedThisRound);
+        bonuses[slug] = totalBonus * (sumInvestments[slug] || 0) / totalInvestedThisRound;
         entrepreneurs[eid].bonuses[tank.currentRound] = bonuses[slug];
         finalValues[slug] = 
           entrepreneurs[eid].postmoneyValuations[tank.currentRound] 
             + bonuses[slug];
         entrepreneurs[eid].finalValues[tank.currentRound] = finalValues[slug];
 
-      });
+      };
 
       console.log('totalBonus = ', totalBonus);
       console.log('sumInvestments = ', sumInvestments);
@@ -235,6 +239,56 @@ angular.module('tunatankApp')
       console.log(sumInvestments);
     }
 
+    function getSlug2Eid () {
+      var slug2eid = {};
+      entrepreneurs.$getIndex().forEach(function(eid) {
+        slug2eid[entrepreneurs[eid].urlSlug] = eid;
+      })
+      return slug2eid;
+    }
+
+    function finishContest(){
+      var slug2eid = getSlug2Eid();
+      var positions = {};
+      console.log('positions =', positions);
+      investors.$getIndex().forEach(function(investorUUID) {
+        var investor = investors[investorUUID];
+        positions[investorUUID] = {};
+        for (var i = 0; i < rounds.length; i++) {
+          if (_.isUndefined(investor.investments)) {
+            continue;
+          };
+          _.forOwn(investor.investments[i], function(investment, slug){
+            var eid = slug2eid[slug];
+            if (_.isUndefined(eid)) {
+              // dummy
+              return;
+            };
+            var entrepreneur = entrepreneurs[eid];
+            console.log('investment of ', investment.amount);
+            var purchasedPercent = investment.amount / entrepreneur.postmoneyValuations[i];
+            console.log('purchasedPercent = ', purchasedPercent);
+
+            if(!_.has(positions[investorUUID], eid)){
+              positions[investorUUID][eid] = {
+                purchasedPercent: 0,
+                totalInvestment: 0,
+              }
+            }
+            positions[investorUUID][eid].purchasedPercent += purchasedPercent;
+            positions[investorUUID][eid].totalInvestment += investment.amount;
+            console.log(positions[investorUUID][eid]);
+          });
+        };
+        investors[investorUUID].positions = positions[investorUUID];
+      });
+      investors.$save();
+      console.log(positions);
+      console.log('MARKING done');
+      tank.done = true;
+      tank.$save();
+    }
+
     return {
     	bar: 'fucking shit',
     	tank: tank,
@@ -248,5 +302,7 @@ angular.module('tunatankApp')
       recomputeValuations: recomputeValuations,
       changeInvestment: changeInvestment,
       getRemainingCapital: getRemainingCapital,
+      maxRounds: rounds.length,
+      finishContest: finishContest
     }
   }]);
