@@ -1,6 +1,6 @@
 # Tuna Tank
 
-Tuna Tank is a web app that lets an audience invest in start-ups during a pitch contest. The name is a play on the "[Shark Tank](http://en.wikipedia.org/wiki/Shark_Tank)" television show.
+Tuna Tank is a mobile-friendly web app that lets an audience invest in start-ups during a pitch contest. The name is a play on the "[Shark Tank](http://en.wikipedia.org/wiki/Shark_Tank)" television show.
 
 The application uses:
 
