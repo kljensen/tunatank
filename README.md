@@ -1,6 +1,6 @@
 # Tuna Tank
 
-Tuna Tank is a mobile-friendly web app that lets an audience invest in start-ups during a pitch contest. The name is a play on the "[Shark Tank](http://en.wikipedia.org/wiki/Shark_Tank)" television show.
+Tuna Tank is a mobile-friendly web app that lets an audience invest in start-ups during a pitch contest. The name is a play on the "[Shark Tank](http://en.wikipedia.org/wiki/Shark_Tank)" television show and was developed at [the Yale School of Management](Yale School of Management).
 
 The application uses:
 
@@ -48,7 +48,7 @@ In the screenshots below  you can see the buttons that allow you to invest in th
 
 
 ## Example event
-We used the application without issue in June 2014. Roughly 30 persons participated and three teams pitched. A good time was had by all.
+We used the application without issue in June 2014. Roughly 30 persons participated and three teams pitched. A good time was had by all and the winner got a [Yale SOM](http://som.yale.edu/) fleece.
 
 ![ScreenShot](https://raw.githubusercontent.com/kljensen/tunatank/screenshots/images/event.jpg)
 
